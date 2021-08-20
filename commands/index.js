@@ -1,4 +1,6 @@
-const exec_COMMAND = (message) => {
+const autoload = require('./command/index.js');
+
+const exec_COMMAND = (client, message) => {
     if (message.author.bot) return;
 
 	let args;
@@ -20,16 +22,21 @@ const exec_COMMAND = (message) => {
 
 	if (command) {
         try{
-            const { proc, required_args } = require(`./command/${command}`);
+            const commandMain = autoload(command)
+            if(commandMain === false)
+                return message.channel.send(`Command not found`);
+            const { proc, required_args } = commandMain
             if (args.length === required_args) {
-                const msg = proc(args)
+                const msg = proc(client, message, args)
             } else {
                 return message.channel.send(`Args not match`);
             }
         }
         catch (e) {
-            // Command not found
-            return message.channel.send(`Command not found`);
+            if(process.env.DEBUG == 1){
+                console.log(e)
+            }
+            return message.channel.send(`Internal error`);
         }
 
 	}
