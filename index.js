@@ -1,19 +1,19 @@
 require('dotenv').config();
+// Initial discordjs
 const { Client, Intents } = require('discord.js');
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_VOICE_STATES] });
 const { register_SLASH, exec_SLASH } = require("./slash/index")
-const { exec_COMMAND } = require("./command/index")
+const { exec_COMMAND } = require("./commands/index.js")
 
 // Register slash
 register_SLASH();
 
 client.on('interactionCreate', async interaction => {
-  console.log('Interaction recived...');
   await exec_SLASH(interaction, client)
 });
 
 client.on('messageCreate', async message => {
-	await exec_COMMAND
+	await exec_COMMAND(client, message)
 });
 
 // =====================================
