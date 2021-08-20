@@ -3,7 +3,7 @@ const { Routes } = require('discord-api-types/v9');
 const { REST } = require('@discordjs/rest');
 const rest = new REST({ version: '9' }).setToken(process.env.TOKEN);
 
-module.exports = async () => {
+const register_SLASH = async () => {
     try {
       console.log('Started refreshing application (/) commands.');
   
@@ -16,4 +16,17 @@ module.exports = async () => {
     } catch (error) {
       console.error(error);
     }
+}
+
+const exec_SLASH = async (interaction, client) => {
+    if (!interaction.isCommand()) return;
+
+    if (interaction.commandName === 'ping') {
+		await interaction.reply(`Pong! (${client.ws.ping} ms)`);
+	}
+}
+
+module.exports = {
+    register_SLASH,
+    exec_SLASH
 }
