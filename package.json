@@ -1,0 +1,25 @@
+{
+  "name": "discordbot-activity",
+  "version": "1.0.0",
+  "description": "Discordbot for activity together",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yukikwi/discordbot-activity.git"
+  },
+  "author": "yukikwi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yukikwi/discordbot-activity/issues"
+  },
+  "homepage": "https://github.com/yukikwi/discordbot-activity#readme",
+  "dependencies": {
+    "@discordjs/rest": "^0.1.0-canary.0",
+    "discord-api-types": "^0.22.0",
+    "discord.js": "^13.1.0",
+    "dotenv": "^10.0.0"
+  }
+}
