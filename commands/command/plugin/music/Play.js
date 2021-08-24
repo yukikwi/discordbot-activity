@@ -16,7 +16,7 @@ const InitialPlay = (VoiceChannel, VoiceConnection) => {
             getPlayer(VoiceChannel.guild.id).play(stream)
         }
         else{
-            connection.destroy()
+            VoiceConnection.destroy()
         }
     });
 }
