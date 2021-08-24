@@ -26,8 +26,9 @@ const exec_COMMAND = (client, message) => {
             if(commandMain === false)
                 return message.channel.send(`Command not found`);
             const { proc, required_args } = commandMain
+
             // Subcommand depend on first args
-            let required_arg = typeof(required_args[args[0]] === 'undefined')? required_args.default : required_args[args[0]]
+            const required_arg = typeof(required_args[args[0]])  === 'undefined' ? required_args.default : required_args[args[0]]
             if (args.length === required_arg) {
                 const msg = proc(client, message, args)
             } else {
