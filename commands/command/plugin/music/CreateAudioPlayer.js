@@ -1,16 +1,26 @@
 const { createAudioPlayer, AudioPlayerStatus } = require('@discordjs/voice');
-const { createPlayer } = require('./Store')
+const { createPlayer, AudioPlayer_exist } = require('./Store')
 
 const ModulecreatePlayer = (channel, voiceConnection) => {
-    const player = createAudioPlayer();
+    let player = null
+    console.log('ModulecreatePlayer')
+    console.log(AudioPlayer_exist(channel.guild.id))
+    if(AudioPlayer_exist(channel.guild.id) === false){
+        console.log('Create new player.............')
+        player = createAudioPlayer();
 
-    createPlayer(channel.guild.id, player, voiceConnection)
+        createPlayer(channel.guild.id, player, voiceConnection)
+    }
+    else{
+        console.log('Use old player.............')
+        player = AudioPlayer_exist(channel.guild.id)
+    }
     return player
 }
 
 const SubscriptionPlayer = (voiceConnection, player) => {
     const subscription = voiceConnection.subscribe(player);
-    player.on(AudioPlayerStatus.Idle, () => connection.destroy());
+
     return subscription
 }
 
