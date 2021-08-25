@@ -7,7 +7,7 @@ module.exports = (VoiceChannel, message) =>{
             setStop(VoiceChannel.guild.id, false)
             const nextSong = getSong(VoiceChannel.guild.id)
             if(nextSong !== false){
-                const stream = ytdl(nextSong.url)
+                const stream = ytdl(nextSong.url, VoiceChannel.guild.id)
                 message.channel.send("Play song: " + nextSong.title)
                 getPlayer(VoiceChannel.guild.id).play(stream)
             }

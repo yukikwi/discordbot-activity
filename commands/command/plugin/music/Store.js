@@ -7,6 +7,7 @@ const createPlayer = (guild_id, Player, voiceConnection) => {
         player: Player,
         pause: true,
         stop: false,
+        bass: true,
         queue: []
     }
 }
@@ -83,6 +84,14 @@ const QueueCount = (guild_id) => {
     return AudioPlayer[guild_id].queue.length
 }
 
+const setBass = (guild_id, status) => {
+    AudioPlayer[guild_id].bass = status
+}
+
+const getBass = (guild_id) => {
+    return AudioPlayer[guild_id].bass
+}
+
 module.exports = {
     AudioPlayer_exist,
     createPlayer,
@@ -101,5 +110,7 @@ module.exports = {
     getCurrentPlay,
     setCurrentPlay,
     QueueExist,
-    QueueCount
+    QueueCount,
+    setBass,
+    getBass
 }

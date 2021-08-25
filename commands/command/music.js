@@ -2,7 +2,8 @@
 const required_args = {
     default: 1,
     play: 2,
-    suggest: 2
+    suggest: 2,
+    bass: 2
 }
 
 const play = require('./plugin/music/Play')
@@ -11,6 +12,7 @@ const resume = require('./plugin/music/Resume')
 const pause = require('./plugin/music/Pause')
 const skip = require('./plugin/music/Skip')
 const suggest = require('./plugin/music/Suggest')
+const bass = require('./plugin/music/Bass')
 
 const proc = async (client, message, args) => {
 
@@ -37,6 +39,9 @@ const proc = async (client, message, args) => {
         }
         else if(args[0] === 'suggest'){
             suggest(VoiceChannel, args[1], message)
+        }
+        else if(args[0] === 'bass'){
+            bass(VoiceChannel, args[1], message)
         }
     }
 }

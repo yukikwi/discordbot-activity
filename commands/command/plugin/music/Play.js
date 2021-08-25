@@ -7,7 +7,7 @@ const yt = require('./Yt-search')
 const ytdlCore = require('ytdl-core')
 
 const InitialPlay = (VoiceChannel, VoiceConnection, message) => {
-    const stream = ytdl(getSong(VoiceChannel.guild.id).url)
+    const stream = ytdl(getSong(VoiceChannel.guild.id).url, VoiceChannel.guild.id)
     getPlayer(VoiceChannel.guild.id).play(stream)
     setPlay(VoiceChannel.guild.id, true)
     SubscriptionPlayer(VoiceConnection, getPlayer(VoiceChannel.guild.id))
@@ -17,7 +17,7 @@ const InitialPlay = (VoiceChannel, VoiceConnection, message) => {
             if(nextSong !== false){
                 message.channel.send("> ** :play_pause: Play next song: **" + nextSong.title)
                 setCurrentPlay(VoiceChannel.guild.id, nextSong.url)
-                const stream = ytdl(nextSong.url)
+                const stream = ytdl(nextSong.url, VoiceChannel.guild.id)
                 getPlayer(VoiceChannel.guild.id).play(stream)
             }
             else{
