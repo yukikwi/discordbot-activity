@@ -7,7 +7,7 @@ const yt = require('./Yt-search')
 const ytdlCore = require('ytdl-core')
 
 const InitialPlay = (VoiceChannel, VoiceConnection, message) => {
-    const stream = ytdl(getSong(VoiceChannel.guild.id))
+    const stream = ytdl(getSong(VoiceChannel.guild.id).url)
     getPlayer(VoiceChannel.guild.id).play(stream)
     setPlay(VoiceChannel.guild.id, true)
     SubscriptionPlayer(VoiceConnection, getPlayer(VoiceChannel.guild.id))
@@ -15,9 +15,9 @@ const InitialPlay = (VoiceChannel, VoiceConnection, message) => {
         if(isStop(VoiceChannel.guild.id) === false){
             const nextSong = getSong(VoiceChannel.guild.id)
             if(nextSong !== false){
-                message.channel.send("Play next song: " + (await ytdlCore.getBasicInfo(nextSong)).videoDetails.title)
-                setCurrentPlay(VoiceChannel.guild.id, nextSong)
-                const stream = ytdl(nextSong)
+                message.channel.send("> ** :play_pause: Play next song: **" + nextSong.title)
+                setCurrentPlay(VoiceChannel.guild.id, nextSong.url)
+                const stream = ytdl(nextSong.url)
                 getPlayer(VoiceChannel.guild.id).play(stream)
             }
             else{
@@ -30,7 +30,7 @@ const InitialPlay = (VoiceChannel, VoiceConnection, message) => {
     // Player error
     getPlayer(VoiceChannel.guild.id).on('error', (e) => {
         console.log(e)
-    }
+    })
 }
 
 const Play = async (VoiceChannel, keyword, message) => {
@@ -45,14 +45,16 @@ const Play = async (VoiceChannel, keyword, message) => {
         url = await yt.search(keyword)
     }
 
-    addQueue(VoiceChannel.guild.id, url)
+    const title = (await ytdlCore.getBasicInfo(url)).videoDetails.title
+
+    addQueue(VoiceChannel.guild.id, url, title)
     setCurrentPlay(VoiceChannel.guild.id, url)
     if(isPlay(VoiceChannel.guild.id) === false){
-        message.channel.send("Play next song: " + (await ytdlCore.getBasicInfo(url)).videoDetails.title)
+        message.channel.send("> ** Play song: **" + title)
         InitialPlay (VoiceChannel, VoiceConnection, message)
     }
     else {
-        message.channel.send("Add song: " + (await ytdlCore.getBasicInfo(url)).videoDetails.title)
+        message.channel.send("> ** Add song: **" + title)
     }
 }
 

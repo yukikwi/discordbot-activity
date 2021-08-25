@@ -23,8 +23,11 @@ const getVC = (guild_id) => {
     return AudioPlayer[guild_id].voiceconnection
 }
 
-const addQueue = (guild_id, songUrl) => {
-    AudioPlayer[guild_id].queue.push(songUrl)
+const addQueue = (guild_id, songUrl, songTitle) => {
+    AudioPlayer[guild_id].queue.push({
+        title: songTitle,
+        url: songUrl
+    })
 }
 
 const clearQueue = (guild_id, songUrl) => {

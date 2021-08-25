@@ -4,11 +4,11 @@ const ytdl = require('./Ytdl-download')
 module.exports = (VoiceChannel, message) =>{
     if(AudioPlayer_exist(VoiceChannel.guild.id) !== false){
         if(isStop(VoiceChannel.guild.id) === true){
-            console.log('Resume from stop')
             setStop(VoiceChannel.guild.id, false)
             const nextSong = getSong(VoiceChannel.guild.id)
             if(nextSong !== false){
-                const stream = ytdl(nextSong)
+                const stream = ytdl(nextSong.url)
+                message.channel.send("Play song: " + nextSong.title)
                 getPlayer(VoiceChannel.guild.id).play(stream)
             }
             else{
