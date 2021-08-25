@@ -1,4 +1,4 @@
-const { createAudioPlayer, AudioPlayerStatus } = require('@discordjs/voice');
+const { createAudioPlayer } = require('@discordjs/voice');
 const { createPlayer, AudioPlayer_exist } = require('./Store')
 
 const ModulecreatePlayer = (channel, voiceConnection) => {
