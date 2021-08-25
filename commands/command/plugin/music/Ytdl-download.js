@@ -16,6 +16,7 @@ module.exports = (url, guild_id) => {
             '-loglevel', '0',
             '-f', 's16le',
             '-ar', '48000',
+            '-ab', '192k',
             '-ac', '2',
             '-af',
             //'bass=g=3:f=110:w=0.6',
