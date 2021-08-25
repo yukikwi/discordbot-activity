@@ -1,7 +1,7 @@
 const join = require('./Join')
 const { AudioPlayerStatus } = require('@discordjs/voice');
 const { ModulecreatePlayer, SubscriptionPlayer } = require('./CreateAudioPlayer')
-const { addQueue, getPlayer, getSong, isPlay, setPlay, destroyPlayer, isStop, setCurrentPlay, QueueCount } = require('./Store')
+const { addQueue, getPlayer, getSong, isPlay, setPlay, destroyPlayer, isStop, setCurrentPlay, QueueCount, getBass } = require('./Store')
 const ytdl = require('./Ytdl-download')
 const yt = require('./Yt-search')
 const ytdlCore = require('ytdl-core')
@@ -15,7 +15,12 @@ const InitialPlay = (VoiceChannel, VoiceConnection, message) => {
         if(isStop(VoiceChannel.guild.id) === false){
             const nextSong = getSong(VoiceChannel.guild.id)
             if(nextSong !== false){
-                message.channel.send("> ** :play_pause: Play next song: **" + nextSong.title)
+                if(!getBass(VoiceChannel.guild.id)){
+                    message.channel.send("> ** :play_pause: Play next song: **" + nextSong.title +" (Bass off)")
+                }
+                else{
+                    message.channel.send("> ** :play_pause: Play next song: **" + nextSong.title)
+                }
                 setCurrentPlay(VoiceChannel.guild.id, nextSong.url)
                 const stream = ytdl(nextSong.url, VoiceChannel.guild.id)
                 getPlayer(VoiceChannel.guild.id).play(stream)
