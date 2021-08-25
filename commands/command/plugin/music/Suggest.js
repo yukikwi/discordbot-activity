@@ -14,7 +14,7 @@ const Suggest = async (VoiceChannel, n, message) => {
             const Suggest_VID = await YTsuggest(vid)
             let sug_index = 0
             let url = 'https://www.youtube.com/watch?v=' + Suggest_VID[sug_index].id.videoId
-            while(QueueExist(VoiceChannel.guild.id, url)){
+            while(QueueExist(VoiceChannel.guild.id, url) || url === getCurrentPlay(VoiceChannel.guild.id)){
                 sug_index = sug_index + 1
                 url = 'https://www.youtube.com/watch?v=' + Suggest_VID[sug_index].id.videoId
             }
