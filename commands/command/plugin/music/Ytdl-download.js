@@ -4,7 +4,7 @@ const ytdl = require("ytdl-core");
 const prism = require('prism-media');
 
 module.exports = (url, guild_id) => {
-    const stream = ytdl(url, {
+    let stream = ytdl(url, {
         filter: 'audioonly',
         type: 'opus',
         quality: 'highestaudio'
@@ -18,12 +18,12 @@ module.exports = (url, guild_id) => {
             '-f', 's16le',
             '-ar', '48000',
             '-ac', '2',
-            '-af', 'bass=g=3:f=110:w=0.6'
+            '-af', 'bass=g=3:f=110:w=0.6',
         ]
         const transcoder = new prism.FFmpeg({
             args: FFMPEG_args
         });
-        stream.pipe(transcoder).pipe(new prism.opus.Encoder({ rate: 48000, channels: 2, frameSize: 960 }))
+        stream = stream.pipe(transcoder).pipe(new prism.opus.Encoder({ rate: 48000, channels: 2, frameSize: 960 }))
         streaminputType = StreamType.Opus
     }
     
