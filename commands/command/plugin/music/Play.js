@@ -26,6 +26,11 @@ const InitialPlay = (VoiceChannel, VoiceConnection, message) => {
             }
         }
     });
+
+    // Player error
+    getPlayer(VoiceChannel.guild.id).on('error', (e) => {
+        console.log(e)
+    }
 }
 
 const Play = async (VoiceChannel, keyword, message) => {

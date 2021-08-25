@@ -11,12 +11,15 @@ const Suggest = async (VoiceChannel, n, message) => {
     if(AudioPlayer_exist(VoiceChannel.guild.id) !== false){
         let vid = (YouTubeGetID(getCurrentPlay(VoiceChannel.guild.id)))
         for(let i = 1; i <= n; i++){
-            const Suggest_VID = await YTsuggest(vid)
+            let Suggest_VID = await YTsuggest(vid)
             let sug_index = 0
             let url = 'https://www.youtube.com/watch?v=' + Suggest_VID[sug_index].id.videoId
-            while(QueueExist(VoiceChannel.guild.id, url) || url === getCurrentPlay(VoiceChannel.guild.id)){
+            while(QueueExist(VoiceChannel.guild.id, url) || url === getCurrentPlay(VoiceChannel.guild.id) || typeof(Suggest_VID[sug_index].snippet) === 'undefined'){
                 sug_index = sug_index + 1
                 url = 'https://www.youtube.com/watch?v=' + Suggest_VID[sug_index].id.videoId
+                if(sug_index % 5 === 1){
+                    Suggest_VID = await YTsuggest(vid, sug_index)
+                }
             }
             addQueue(VoiceChannel.guild.id, url)
             message.channel.send("Suggest song: " + Suggest_VID[sug_index].snippet.title + "["+url+"]")
