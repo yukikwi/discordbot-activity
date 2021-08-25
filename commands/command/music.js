@@ -1,7 +1,8 @@
 'use strict';
 const required_args = {
     default: 1,
-    play: 2
+    play: 2,
+    suggest: 2
 }
 
 const play = require('./plugin/music/Play')
@@ -9,6 +10,7 @@ const stop = require('./plugin/music/Stop')
 const resume = require('./plugin/music/Resume')
 const pause = require('./plugin/music/Pause')
 const skip = require('./plugin/music/Skip')
+const suggest = require('./plugin/music/Suggest')
 
 const proc = async (client, message, args) => {
 
@@ -19,19 +21,22 @@ const proc = async (client, message, args) => {
     else{
         let VoiceChannel = client.channels.cache.get(message.member.voice.channelId)
         if(args[0] === 'play'){
-            play(VoiceChannel, args[1])
+            play(VoiceChannel, args[1], message)
         }
         else if(args[0] === 'stop'){
-            stop(VoiceChannel)
+            stop(VoiceChannel, message)
         }
         else if(args[0] === 'resume'){
-            resume(VoiceChannel)
+            resume(VoiceChannel, message)
         }
         else if(args[0] === 'pause'){
-            pause(VoiceChannel)
+            pause(VoiceChannel, message)
         }
         else if(args[0] === 'skip'){
-            skip(VoiceChannel)
+            skip(VoiceChannel, message)
+        }
+        else if(args[0] === 'suggest'){
+            suggest(VoiceChannel, args[1], message)
         }
     }
 }

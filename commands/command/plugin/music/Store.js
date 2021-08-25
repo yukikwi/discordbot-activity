@@ -3,6 +3,7 @@ let AudioPlayer = {}
 const createPlayer = (guild_id, Player, voiceConnection) => {
     AudioPlayer[guild_id] = {
         voiceconnection: voiceConnection,
+        currentPlay: '',
         player: Player,
         pause: true,
         stop: false,
@@ -63,6 +64,18 @@ const getQueue = (guild_id) => {
     return AudioPlayer[guild_id].queue
 }
 
+const getCurrentPlay = (guild_id) => {
+    return AudioPlayer[guild_id].currentPlay
+}
+
+const setCurrentPlay = (guild_id, url) => {
+    return AudioPlayer[guild_id].currentPlay = url
+}
+
+const QueueExist = (guild_id, url) => {
+    return (AudioPlayer[guild_id].queue.indexOf(url) !== -1)? true:false
+}
+
 module.exports = {
     AudioPlayer_exist,
     createPlayer,
@@ -77,5 +90,8 @@ module.exports = {
     setStop,
     getSong,
     setQueue,
-    getQueue
+    getQueue,
+    getCurrentPlay,
+    setCurrentPlay,
+    QueueExist
 }
