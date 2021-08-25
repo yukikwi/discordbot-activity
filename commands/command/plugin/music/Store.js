@@ -79,6 +79,10 @@ const QueueExist = (guild_id, url) => {
     return (AudioPlayer[guild_id].queue.indexOf(url) !== -1)? true:false
 }
 
+const QueueCount = (guild_id) => {
+    return AudioPlayer[guild_id].queue.length
+}
+
 module.exports = {
     AudioPlayer_exist,
     createPlayer,
@@ -96,5 +100,6 @@ module.exports = {
     getQueue,
     getCurrentPlay,
     setCurrentPlay,
-    QueueExist
+    QueueExist,
+    QueueCount
 }
