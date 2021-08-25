@@ -5,6 +5,7 @@ const createPlayer = (guild_id, Player, voiceConnection) => {
         voiceconnection: voiceConnection,
         player: Player,
         pause: true,
+        stop: false,
         queue: []
     }
 }
@@ -17,6 +18,10 @@ const getPlayer = (guild_id) => {
     return AudioPlayer[guild_id].player
 }
 
+const getVC = (guild_id) => {
+    return AudioPlayer[guild_id].voiceconnection
+}
+
 const addQueue = (guild_id, songUrl) => {
     AudioPlayer[guild_id].queue.push(songUrl)
 }
@@ -26,7 +31,8 @@ const clearQueue = (guild_id, songUrl) => {
 }
 
 const destroyPlayer =  (guild_id) => {
-    return delete AudioPlayer[guild_id]
+    delete AudioPlayer[guild_id]
+    console.log(AudioPlayer)
 }
 
 const isPlay = (guild_id) => {
@@ -35,6 +41,14 @@ const isPlay = (guild_id) => {
 
 const setPlay = (guild_id, status) => {
     AudioPlayer[guild_id].pause = !status
+}
+
+const isStop = (guild_id) => {
+    return AudioPlayer[guild_id].stop
+}
+
+const setStop = (guild_id, status) => {
+    AudioPlayer[guild_id].stop = status
 }
 
 const getSong = (guild_id) => {
@@ -53,11 +67,14 @@ module.exports = {
     AudioPlayer_exist,
     createPlayer,
     getPlayer,
+    getVC,
     addQueue,
     clearQueue,
     destroyPlayer,
     isPlay,
     setPlay,
+    isStop,
+    setStop,
     getSong,
     setQueue,
     getQueue

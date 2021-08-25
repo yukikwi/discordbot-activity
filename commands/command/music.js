@@ -8,6 +8,7 @@ const play = require('./plugin/music/Play')
 const stop = require('./plugin/music/Stop')
 const resume = require('./plugin/music/Resume')
 const pause = require('./plugin/music/Pause')
+const skip = require('./plugin/music/Skip')
 
 const proc = async (client, message, args) => {
 
@@ -28,6 +29,9 @@ const proc = async (client, message, args) => {
         }
         else if(args[0] === 'pause'){
             pause(VoiceChannel)
+        }
+        else if(args[0] === 'skip'){
+            skip(VoiceChannel)
         }
     }
 }

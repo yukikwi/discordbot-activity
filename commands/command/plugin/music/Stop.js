@@ -1,6 +1,6 @@
-const { getPlayer, destroyPlayer } = require('./Store')
+const { getPlayer, setStop } = require('./Store')
 
 module.exports = (VoiceChannel) =>{
     getPlayer(VoiceChannel.guild.id).stop()
-    destroyPlayer(VoiceChannel.guild.id)
+    setStop(VoiceChannel.guild.id, true)
 }
