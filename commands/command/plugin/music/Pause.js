@@ -1,4 +1,4 @@
-const { getPlayer, setPlay } = require('./Store')
+const { getPlayer, setPlay, AudioPlayer_exist } = require('./Store')
 
 module.exports = (VoiceChannel, message) =>{
     if(AudioPlayer_exist(VoiceChannel.guild.id) !== false){
