@@ -29,7 +29,12 @@ const exec_COMMAND = (client, message) => {
 
             // Subcommand depend on first args
             const required_arg = typeof(required_args[args[0]])  === 'undefined' ? required_args.default : required_args[args[0]]
-            if (args.length === required_arg) {
+            if (args.length >= required_arg) {
+                while(args.length > required_arg){
+                    args[args.length - 2] = args[args.length - 2] + ' ' + args[args.length - 1]
+                    args.pop()
+                }
+                console.log(args)
                 const msg = proc(client, message, args)
             } else {
                 return message.channel.send(`Args not match`);
