@@ -34,7 +34,6 @@ const exec_COMMAND = (client, message) => {
                     args[args.length - 2] = args[args.length - 2] + ' ' + args[args.length - 1]
                     args.pop()
                 }
-                console.log(args)
                 const msg = proc(client, message, args)
             } else {
                 return message.channel.send(`Args not match`);
