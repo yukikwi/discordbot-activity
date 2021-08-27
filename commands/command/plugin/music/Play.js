@@ -12,9 +12,15 @@ const InitialPlay = (VoiceChannel, VoiceConnection, message) => {
     setPlay(VoiceChannel.guild.id, true)
     SubscriptionPlayer(VoiceConnection, getPlayer(VoiceChannel.guild.id))
     getPlayer(VoiceChannel.guild.id).on(AudioPlayerStatus.Idle, async () => {
+
+        if(process.env.DEBUG === '1')
+            console.log('Player set to IDIE by event')
+        
         if(isStop(VoiceChannel.guild.id) === false){
             const nextSong = getSong(VoiceChannel.guild.id)
             if(nextSong !== false){
+                if(process.env.DEBUG === '1')
+                    console.log('Next song is: ' + nextSong)
                 if(!getBass(VoiceChannel.guild.id)){
                     message.channel.send("> ** :play_pause: Play next song: **" + nextSong.title +" (Bass off)")
                 }
@@ -26,6 +32,21 @@ const InitialPlay = (VoiceChannel, VoiceConnection, message) => {
                 getPlayer(VoiceChannel.guild.id).play(stream)
             }
             else{
+                if(process.env.DEBUG === '1')
+                    console.log('destroyPlayer and keep config')
+
+                destroyPlayer(VoiceChannel.guild.id)
+                VoiceConnection.destroy()
+            }
+        }
+        else {
+            if(process.env.DEBUG === '1')
+                console.log('Stop command detected')
+
+            if( QueueCount(VoiceChannel.guild.id) === 0){
+                if(process.env.DEBUG === '1')
+                    console.log('No more song in queue -> destroyPlayer and keep config')
+
                 destroyPlayer(VoiceChannel.guild.id)
                 VoiceConnection.destroy()
             }
@@ -55,7 +76,14 @@ const Play = async (VoiceChannel, keyword, message) => {
     addQueue(VoiceChannel.guild.id, url, title)
     if(isPlay(VoiceChannel.guild.id) === false || ( isStop(VoiceChannel.guild.id) === true && QueueCount(VoiceChannel.guild.id) === 1)){
         setCurrentPlay(VoiceChannel.guild.id, url)
-        message.channel.send("> ** Play song: **" + title)
+        
+        if(!getBass(VoiceChannel.guild.id)){
+            message.channel.send("> ** :play_pause: Play song: **" + title +" (Bass off)")
+        }
+        else{
+            message.channel.send("> ** :play_pause: Play song: **" + title)
+        }
+
         InitialPlay (VoiceChannel, VoiceConnection, message)
     }
     else {
