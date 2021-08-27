@@ -1,19 +1,28 @@
 let AudioPlayer = {}
 
-const createPlayer = (guild_id, Player, voiceConnection) => {
-    AudioPlayer[guild_id] = {
-        voiceconnection: voiceConnection,
-        currentPlay: '',
-        player: Player,
-        pause: true,
-        stop: false,
-        bass: true,
-        queue: []
+const createConfig = (guild_id) => {
+    if(typeof (AudioPlayer[guild_id]) === 'undefined'){
+        if(process.env.DEBUG === '1')
+            console.log('Store: config not found -> Regenerating... ')
+        AudioPlayer[guild_id] = {
+            currentPlay: '',
+            pause: true,
+            stop: false,
+            bass: true,
+            queue: []
+        }
     }
 }
 
+const createPlayer = (guild_id, Player, voiceConnection) => {
+    createConfig(guild_id)
+    console.log('Store: set player and voice connection ')
+    AudioPlayer[guild_id].player = Player
+    AudioPlayer[guild_id].voiceconnection = voiceConnection
+}
+
 const AudioPlayer_exist = (guild_id) => {
-    return (typeof(AudioPlayer[guild_id]) === 'undefined')? false : getPlayer(guild_id)
+    return (typeof(AudioPlayer[guild_id]) === 'undefined' || typeof(AudioPlayer[guild_id].player) === 'undefined')? false : getPlayer(guild_id)
 }
 
 const getPlayer = (guild_id) => {
@@ -36,8 +45,12 @@ const clearQueue = (guild_id, songUrl) => {
 }
 
 const destroyPlayer =  (guild_id) => {
-    delete AudioPlayer[guild_id]
-    console.log(AudioPlayer)
+    
+    delete AudioPlayer[guild_id].player
+    AudioPlayer[guild_id].currentPlay = ''
+    AudioPlayer[guild_id].pause = true,
+    AudioPlayer[guild_id].stop = false
+    AudioPlayer[guild_id].queue = []
 }
 
 const isPlay = (guild_id) => {
@@ -73,7 +86,8 @@ const getCurrentPlay = (guild_id) => {
 }
 
 const setCurrentPlay = (guild_id, url) => {
-    return AudioPlayer[guild_id].currentPlay = url
+    AudioPlayer[guild_id].stop = false
+    AudioPlayer[guild_id].currentPlay = url
 }
 
 const QueueExist = (guild_id, url) => {
@@ -94,6 +108,7 @@ const getBass = (guild_id) => {
 
 module.exports = {
     AudioPlayer_exist,
+    createConfig,
     createPlayer,
     getPlayer,
     getVC,
