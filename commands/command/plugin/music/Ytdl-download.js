@@ -19,18 +19,20 @@ module.exports = (url, guild_id) => {
             '-ab', '192k',
             '-ac', '2',
             '-af',
-            //'bass=g=3:f=110:w=0.6',
-            //'firequalizer=gain_entry=\'entry(31,5.8);entry(62,5.8);entry(125,3);entry(500,-1.5);entry(1000,-1.5)\''
             'firequalizer=gain_entry=\'entry(31,10);entry(62,5.8);entry(125,3);entry(500,-1.5);entry(1000,-1.5):delay=0.1:fixed=on:zero_phase=on\''
         ]
         const transcoder = new prism.FFmpeg({
             args: FFMPEG_args
         });
+
         stream = stream
         .pipe(transcoder)
         .pipe(new prism.opus.Encoder({ rate: 48000, channels: 2, frameSize: 960 }))
-        if(process.env.DEBUG == 1)
+
+        if(process.env.DEBUG == 1){
+            console.log('Use FFMPEG: ' + prism.FFmpeg.getInfo().version)
             console.log(`Using Opus module ${prism.opus.Encoder.type}`);
+        }
         streaminputType = StreamType.Opus
     }
     
