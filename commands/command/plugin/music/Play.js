@@ -7,7 +7,11 @@ const yt = require('./Yt-search')
 const ytdlCore = require('ytdl-core')
 
 const InitialPlay = async (VoiceChannel, VoiceConnection, message) => {
+    // const stream = await ytdl(getSong(VoiceChannel.guild.id).url, VoiceChannel.guild.id)
     const stream = await ytdl(getSong(VoiceChannel.guild.id).url, VoiceChannel.guild.id)
+    if(process.env.DEBUG === '1')
+        console.log('set stream bitrate: ' + VoiceChannel.bitrate/1000 +'kbps')
+    stream.encoder.setBitrate(VoiceChannel.bitrate)
     getPlayer(VoiceChannel.guild.id).play(stream)
     setPlay(VoiceChannel.guild.id, true)
     SubscriptionPlayer(VoiceConnection, getPlayer(VoiceChannel.guild.id))
@@ -28,7 +32,7 @@ const InitialPlay = async (VoiceChannel, VoiceConnection, message) => {
                     message.channel.send("> ** :play_pause: Play next song: **" + nextSong.title)
                 }
                 setCurrentPlay(VoiceChannel.guild.id, nextSong.url)
-                const stream = await ytdl(nextSong.url, VoiceChannel.guild.id)
+                const stream = await ytdl(nextSong.url, VoiceChannel.guild.id).encoder.setBitrate(VoiceChannel.bitrate)
                 getPlayer(VoiceChannel.guild.id).play(stream)
             }
             else{
