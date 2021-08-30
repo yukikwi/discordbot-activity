@@ -37,8 +37,7 @@ module.exports = async (url, guild_id) => {
             '-ar', '48000',
             '-ab', '192k',
             '-ac', '2',
-            '-af',
-            'firequalizer=gain_entry=\'entry(31,10);entry(62,5.8);entry(125,3);entry(500,-1.5);entry(1000,-1.5):delay=0.1:fixed=on:zero_phase=on\''
+            '-af', 'firequalizer=gain_entry=\'entry(31,3);entry(62,1.5);entry(125,1);entry(500,-0.5);entry(1000,-0.5):delay=0.1:fixed=on:zero_phase=on\'',
         ]
 
         const transcoder = new prism.FFmpeg({
