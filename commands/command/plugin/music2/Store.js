@@ -3,7 +3,8 @@ let Store = []
 const createStore = (guild_id) => {
     Store[guild_id] = {
         eq: '',
-        queue: null
+        queue: null,
+        playing: false
     }
 }
 
@@ -33,9 +34,24 @@ const loadQueue = (guild_id) => {
     return Store[guild_id].queue
 }
 
+const setPlaying = (guild_id, playing) => {
+    if(typeof(Store[guild_id]) === 'undefined')
+        createStore(guild_id)
+    Store[guild_id].playing = playing
+    return true
+}
+
+const loadPlaying = (guild_id) => {
+    if(typeof(Store[guild_id]) === 'undefined')
+        createStore(guild_id)
+    return Store[guild_id].playing
+}
+
 module.exports = {
     seteq,
     loadeq,
     setQueue,
-    loadQueue
+    loadQueue,
+    setPlaying,
+    loadPlaying
 }

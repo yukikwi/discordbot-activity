@@ -15,6 +15,7 @@ const createPlayer = (client) => {
         // Destroy queue
         queue.destroy()
         Store.setQueue(queue.guild.id, null)
+        Store.setPlaying(queue.guild.id, false)
     })
 
     if(process.env.DEBUG === '1')
@@ -63,7 +64,8 @@ module.exports = async (client, song, message) => {
     }).then(x => x.tracks[0]);
     if (!track) return await message.reply(`❌ | Track **${query}** not found!`);
 
-    if(queue.playing === false){
+    if(Store.loadPlaying(message.guildId) === false){
+        Store.setPlaying(message.guildId, true)
         queue.play(track);
         return await message.reply(`⏱️ | Loading track **${track.title}**!`);
     }
