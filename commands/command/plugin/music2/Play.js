@@ -3,7 +3,9 @@ const Store = require('./Store')
 const { seteq } = require('./Eq')
 
 const createPlayer = (client) => {
-    const player = new Player(client);
+    const player = new Player(client, {
+        leaveOnEnd: false
+    });
 
     // Track event
     player.on("trackStart", (queue, track) => queue.metadata.channel.send(`🎶 | Now playing **${track.title}**!`))
@@ -11,7 +13,7 @@ const createPlayer = (client) => {
         queue.metadata.channel.send(`:stop_button:  | Finish playing **${track.title}**!`)
     })
 
-    player.on("queueEnd", (queue) => {
+    player.on("botDisconnect", (queue) => {
         // Destroy queue
         queue.destroy()
         Store.setQueue(queue.guild.id, null)
