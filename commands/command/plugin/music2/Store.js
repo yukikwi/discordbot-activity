@@ -30,7 +30,6 @@ const setQueue = (guild_id, queue) => {
 const loadQueue = (guild_id) => {
     if(typeof(Store[guild_id]) === 'undefined')
         createStore(guild_id)
-    console.log(Store[guild_id].queue)
     return Store[guild_id].queue
 }
 

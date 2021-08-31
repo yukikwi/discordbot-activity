@@ -21,13 +21,16 @@ const proc = async (client, message, args) => {
             play(client, args[1], message)
         }
         else if(args[0] === 'eq'){
-            eq(client, args[1], message)
+            eq.eq(client, args[1], message)
         }
         else if(args[0] === 'pause'){
             pause(client, args[1], message)
         }
         else if(args[0] === 'resume'){
             resume(client, args[1], message)
+        }
+        else{
+            message.reply("Music2: Command not found")
         }
     }
 }

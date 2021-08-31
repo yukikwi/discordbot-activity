@@ -11,7 +11,17 @@ const eqList = [
     'expander', 'softlimiter', 'chorus', 'chorus2d', 'chorus3d', 'fadein', 'dim', 'earrape', 'off'
 ]
 
-module.exports = async (client, eq, message) => {
+const seteq = (message, queue) => {
+    // Config EQ
+    if(Store.loadeq(message.guildId) !== ''){
+        const eq = Store.loadeq(message.guildId)
+        if(process.env.DEBUG === '1')
+            console.log('Set eq to ' + eq)
+        queue.setFilters(message, { eq: true });
+    }
+}
+
+const eq = async (client, eq, message) => {
     if(eqList.includes(eq)){
         if(eq === 'off'){
             Store.seteq(message.guildId, '')
@@ -21,7 +31,13 @@ module.exports = async (client, eq, message) => {
             Store.seteq(message.guildId, eq)
             message.reply(':musical_score: Eq is set now')
         }
+        seteq(message, Store.loadQueue(message.guildId))
     }
     else
         message.reply(':interrobang: EQ not found')
+}
+
+module.exports = {
+    seteq,
+    eq
 }
