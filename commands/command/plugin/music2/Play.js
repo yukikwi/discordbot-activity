@@ -1,12 +1,25 @@
 const { Player, AudioFilters } = require("discord-player");
 const Store = require('./Store')
 
+const seteq = (message, queue) => {
+    // Config EQ
+    if(Store.loadeq(message.guildId) !== ''){
+        const eq = Store.loadeq(message.guildId)
+        if(process.env.DEBUG === '1')
+            console.log('Set eq to ' + eq)
+        queue.setFilters(message, { eq: true });
+    }
+}
+
 module.exports = async (client, song, message) => {
     const player = new Player(client);
 
     // Track event
     player.on("trackStart", (queue, track) => queue.metadata.channel.send(`🎶 | Now playing **${track.title}**!`))
-    player.on("trackEnd", (queue, track) => queue.metadata.channel.send(`:stop_button:  | Finish playing **${track.title}**!`))
+    player.on("trackEnd", (queue, track) => {
+        queue.metadata.channel.send(`:stop_button:  | Finish playing **${track.title}**!`)
+        seteq(message, queue)
+    })
     if(process.env.DEBUG === '1')
         player.on("debug", (queue, msg) => console.log(msg))
     
@@ -22,13 +35,9 @@ module.exports = async (client, song, message) => {
                 channel: message.channel
             }
         });
-        // Config EQ
-        if(Store.loadeq(message.guildId) !== ''){
-            const eq = Store.loadeq(message.guildId)
-            if(process.env.DEBUG === '1')
-                console.log('Set eq to ' + eq)
-            queue.setFilters(message, { eq: true });
-        }
+
+        seteq(message, queue)
+
         // verify vc connection
         try {
             if (!queue.connection) await queue.connect(message.member.voice.channel);
