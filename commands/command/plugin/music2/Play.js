@@ -18,7 +18,7 @@ module.exports = async (client, song, message) => {
     player.on("trackStart", (queue, track) => queue.metadata.channel.send(`🎶 | Now playing **${track.title}**!`))
     player.on("trackEnd", (queue, track) => {
         queue.metadata.channel.send(`:stop_button:  | Finish playing **${track.title}**!`)
-        seteq(message, queue)
+        seteq(message.guildId, queue)
     })
     if(process.env.DEBUG === '1')
         player.on("debug", (queue, msg) => console.log(msg))
@@ -36,7 +36,7 @@ module.exports = async (client, song, message) => {
             }
         });
 
-        seteq(message, queue)
+        seteq(message.guildId, queue)
 
         // verify vc connection
         try {
