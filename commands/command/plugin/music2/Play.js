@@ -36,8 +36,9 @@ module.exports = async (client, song, message) => {
             }
         });
 
+        Store.setQueue(message.guildId, queue)
         seteq(message.guildId, queue)
-
+        
         // verify vc connection
         try {
             if (!queue.connection) await queue.connect(message.member.voice.channel);
