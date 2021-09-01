@@ -29,7 +29,11 @@ const createPlayer = (client) => {
     if(process.env.DEBUG === '1')
         player.on("debug", (queue, msg) => console.log(msg))
     
-    player.on("error", (queue, error) => console.log('Error: '+error))
+    player.on("error", (queue, error) => {
+        Store.setQueue(queue.guild.id, null)
+        Store.setPlaying(queue.guild.id, false)
+        console.log('Error: '+error)
+    })
 
     return player
 }
