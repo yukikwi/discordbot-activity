@@ -5,4 +5,6 @@ module.exports = (client, song, message) => {
         console.log('Load queue from '+message.guildId)
     const queue = Store.loadQueue(message.guildId)
     queue.stop()
+    Store.setQueue(message.guildId, null)
+    Store.setPlaying(message.guildId, false)
 }
