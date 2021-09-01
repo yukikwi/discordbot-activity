@@ -4,6 +4,13 @@ const { seteq } = require('./Eq')
 
 const createPlayer = (client) => {
     const player = new Player(client, {
+        ytdlOptions: {
+            requestOptions: {
+                headers: {
+                    cookie: process.env.YT_COOKIE
+                }
+            }
+        },
         leaveOnEnd: false
     });
 
