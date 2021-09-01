@@ -8,8 +8,12 @@ const createPlayer = (client) => {
     });
 
     // Track event
-    player.on("trackStart", (queue, track) => queue.metadata.channel.send(`🎶 | Now playing **${track.title}**!`))
+    player.on("trackStart", (queue, track) => {
+        Store.setPlaying(queue.guild.id, true)
+        queue.metadata.channel.send(`🎶 | Now playing **${track.title}**!`)
+    })
     player.on("trackEnd", (queue, track) => {
+        Store.setPlaying(queue.guild.id, false)
         queue.metadata.channel.send(`:stop_button:  | Finish playing **${track.title}**!`)
     })
 
