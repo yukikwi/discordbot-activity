@@ -19,6 +19,8 @@ const createPlayer = (client) => {
 
     player.on("botDisconnect", (queue) => {
         // Destroy queue
+        if(process.env.DEBUG === '1')
+            console.log('PlayerEvent: botDisconnect')
         queue.destroy()
         Store.setQueue(queue.guild.id, null)
         Store.setPlaying(queue.guild.id, false)
