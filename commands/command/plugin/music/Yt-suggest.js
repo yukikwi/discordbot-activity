@@ -13,8 +13,6 @@ const YTsuggest = async (video_id, n = 0) => {
   catch(e) {
     return false
   }
-
-  return result.data.items
 }
 
 module.exports = YTsuggest
