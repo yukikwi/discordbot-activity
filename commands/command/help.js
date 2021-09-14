@@ -1,4 +1,6 @@
-const required_args = 1;
+const required_args = {
+  default: 1
+}
 
 const proc = (client, message, args) => {
   const { help } = require('./'+args[0])

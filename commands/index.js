@@ -26,7 +26,14 @@ const exec_COMMAND = (client, message) => {
             if(commandMain === false)
                 return message.channel.send(`Command not found`);
             const { proc, required_args } = commandMain
-            if (args.length === required_args) {
+
+            // Subcommand depend on first args
+            const required_arg = typeof(required_args[args[0]])  === 'undefined' ? required_args.default : required_args[args[0]]
+            if (args.length >= required_arg) {
+                while(args.length > required_arg){
+                    args[args.length - 2] = args[args.length - 2] + ' ' + args[args.length - 1]
+                    args.pop()
+                }
                 const msg = proc(client, message, args)
             } else {
                 return message.channel.send(`Args not match`);

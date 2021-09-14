@@ -1,5 +1,7 @@
 'use strict';
-const required_args = 1;
+const required_args = {
+  default: 1
+}
 const activityInvite = require('./plugin/activity/ActivityInvite')
 
 const Activitys = [
