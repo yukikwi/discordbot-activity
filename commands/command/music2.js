@@ -10,6 +10,7 @@ const eq = require('./plugin/music2/Eq')
 const pause = require('./plugin/music2/Pause')
 const resume = require('./plugin/music2/Resume')
 const stop = require('./plugin/music2/Stop')
+const skip = require('./plugin/music2/Skip')
 
 const proc = async (client, message, args) => {
 
@@ -32,6 +33,9 @@ const proc = async (client, message, args) => {
         }
         else if(args[0] === 'stop'){
             stop(client, args[1], message)
+        }
+        else if(args[0] === 'skip'){
+            skip(client, args[1], message)
         }
         else{
             message.reply("Music2: Command not found")
