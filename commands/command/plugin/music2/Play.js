@@ -16,10 +16,14 @@ const createPlayer = (client) => {
 
     // Track event
     player.on("trackStart", (queue, track) => {
+        if(process.env.DEBUG === '1')
+            console.log('PlayerEvent: trackStart')
         Store.setPlaying(queue.guild.id, true)
         queue.metadata.channel.send(`🎶 | Now playing **${track.title}**!`)
     })
     player.on("trackEnd", (queue, track) => {
+        if(process.env.DEBUG === '1')
+            console.log('PlayerEvent: trackEnd')
         Store.setPlaying(queue.guild.id, false)
         queue.metadata.channel.send(`:stop_button:  | Finish playing **${track.title}**!`)
     })
@@ -37,6 +41,8 @@ const createPlayer = (client) => {
         player.on("debug", (queue, msg) => console.log(msg))
     
     player.on("error", (queue, error) => {
+        if(process.env.DEBUG === '1')
+            console.log('PlayerEvent: error')
         queue.destroy()
         Store.setQueue(queue.guild.id, null)
         Store.setPlaying(queue.guild.id, false)
