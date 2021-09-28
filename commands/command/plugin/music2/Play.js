@@ -3,6 +3,9 @@ const Store = require('./Store')
 const { seteq } = require('./Eq')
 
 const createPlayer = (client) => {
+    if(process.env.DEBUG === '1')
+        console.log('Create Player')
+
     const player = new Player(client, {
         ytdlOptions: {
             requestOptions: {
@@ -10,8 +13,7 @@ const createPlayer = (client) => {
                     cookie: process.env.YT_COOKIE
                 }
             }
-        },
-        leaveOnEnd: false
+        }
     });
 
     // Track event
@@ -28,11 +30,10 @@ const createPlayer = (client) => {
         queue.metadata.channel.send(`:stop_button:  | Finish playing **${track.title}**!`)
     })
 
-    player.on("botDisconnect", (queue) => {
+    player.on("queueEnd", (queue) => {
         // Destroy queue
         if(process.env.DEBUG === '1')
-            console.log('PlayerEvent: botDisconnect')
-        queue.destroy()
+            console.log('PlayerEvent: queueEnd')
         Store.setQueue(queue.guild.id, null)
         Store.setPlaying(queue.guild.id, false)
     })
@@ -43,10 +44,10 @@ const createPlayer = (client) => {
     player.on("error", (queue, error) => {
         if(process.env.DEBUG === '1')
             console.log('PlayerEvent: error')
-        queue.destroy()
         Store.setQueue(queue.guild.id, null)
         Store.setPlaying(queue.guild.id, false)
-        console.log('Error: '+error)
+        queue.destroy()
+        console.log('Something happen -> reset data of this server in store')
     })
 
     return player
