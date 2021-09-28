@@ -37,6 +37,7 @@ const createPlayer = (client) => {
         player.on("debug", (queue, msg) => console.log(msg))
     
     player.on("error", (queue, error) => {
+        queue.destroy()
         Store.setQueue(queue.guild.id, null)
         Store.setPlaying(queue.guild.id, false)
         console.log('Error: '+error)
@@ -70,10 +71,12 @@ module.exports = async (client, song, message) => {
     
     // verify vc connection
     try {
-        if (!queue.connection) await queue.connect(message.member.voice.channel);
+        if (!queue.connection)
+            await queue.connect(message.member.voice.channel);
     } catch {
         queue.destroy();
         Store.setQueue(message.guildId, null)
+        Store.setPlaying(message.guild.id, false)
         return await message.reply("Could not join your voice channel!");
     }
 
