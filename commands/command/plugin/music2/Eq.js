@@ -16,8 +16,14 @@ const seteq = (message, queue) => {
     if(Store.loadeq(message.guildId) !== ''){
         const eq = Store.loadeq(message.guildId)
         if(process.env.DEBUG === '1')
-            console.log('Set eq to ' + eq)
-        queue.setFilters(message, { eq: true });
+            console.log('Set eq to ' + { [eq]: true })
+        try{
+            queue.setFilters({ [eq]: true });
+        }
+        catch(e){
+            message.reply(':warning: Please play some song before.')
+        }
+        
     }
 }
 
